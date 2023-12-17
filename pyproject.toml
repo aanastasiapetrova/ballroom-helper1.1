@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "ballroom-helper1-1"
+version = "0.1.0"
+description = ""
+authors = ["Anastasia Petrova <aanastasia.petrovaa@yandex.ru>"]
+readme = "README.md"
+packages = [{include = "ballroom_helper1"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
