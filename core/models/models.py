@@ -1,26 +1,58 @@
-from sqlalchemy import MetaData, Table, BigInteger, Integer, Boolean, Column, Date, ForeignKey, String
+class AthletCoach(object):
+    pass
 
-metadata = MetaData()
 
-persons = Table(
-    'persons',
-    metadata,
-    Column('id', BigInteger(), nullable=False, unique=True, primary_key=True, autoincrement=True),
-    Column('first_name', String(255), nullable=False),
-    Column('second_name', String(255)),
-    Column('last_name', String(255), nullable=False),
-    Column('birth_date', Date()),
-    Column('gender', Boolean()),
-    Column('is_active', Boolean()),
-    Column('club_id', ForeignKey("clubs.id"))
-)
+class Athlete(object):
+    pass
 
-clubs = Table(
-    'clubs',
-    metadata,
-    Column('id', BigInteger(), nullable=False, unique=True, primary_key=True, autoincrement=True),
-    Column('name', String(255)),
-    Column('city', String(255)),
-    Column('region', Integer()),
-    Column('director_id', BigInteger())
-)
+
+class Club(object):
+    pass
+
+
+class Coach(object):
+    pass
+
+
+class CompetitionJudge(object):
+    pass
+
+
+class Competition(object):
+    pass
+
+
+class Couple(object):
+    pass
+
+
+class GroupParticipant(object):
+    pass
+
+
+class Group(object):
+    pass
+
+
+class Judge(object):
+    pass
+
+
+class Mark(object):
+    pass
+
+
+class Participant(object):
+    pass
+
+
+class Person(object):
+    pass
+
+
+class SheduleJudge(object):
+    pass
+
+
+class Shedule(object):
+    pass
