@@ -1,8 +1,10 @@
-import models
+import core.models.models as models
 from sqlalchemy import MetaData, Table, BigInteger, Integer, Boolean, Column, Date, ForeignKey, String, DateTime
-from sqlalchemy.orm import mapper
+from sqlalchemy.orm import registry
 
 metadata = MetaData()
+
+mapper_registry = registry()
 
 persons = Table(
     'persons',
@@ -182,19 +184,24 @@ marks = Table(
     Column('shedule_id', ForeignKey('shedules.id'))
 )
 
+class Person(object):
+    pass
 
-mapper(models.AthletCoach, athlet_coach)
-mapper(models.Athlete, athletes)
-mapper(models.Club, clubs)
-mapper(models.Coach, coaches)
-mapper(models.CompetitionJudge, competition_judge)
-mapper(models.Competition, competitions)
-mapper(models.Couple, couples)
-mapper(models.GroupParticipant, group_participant)
-mapper(models.Group, groups)
-mapper(models.Judge, judges)
-mapper(models.Mark, marks)
-mapper(models.Participant, participants)
-mapper(models.Person, persons)
-mapper(models.SheduleJudge, shedule_judges)
-mapper(models.Shedule, shedules)
+
+# mapper(models.AthletCoach, athlet_coach)
+# mapper(models.Athlete, athletes)
+# mapper(models.Club, clubs)
+# mapper(models.Coach, coaches)
+# mapper(models.CompetitionJudge, competition_judge)
+# mapper(models.Competition, competitions)
+# mapper(models.Couple, couples)
+# mapper(models.GroupParticipant, group_participant)
+# mapper(models.Group, groups)
+# mapper(models.Judge, judges)
+# mapper(models.Mark, marks)
+# mapper(models.Participant, participants)
+# mapper(Person, persons)
+# mapper(models.SheduleJudge, shedule_judges)
+# mapper(models.Shedule, shedules)
+
+mapper_registry.map_imperatively(Person, persons)

@@ -46,9 +46,6 @@ class Participant(object):
     pass
 
 
-class Person(object):
-    pass
-
 
 class SheduleJudge(object):
     pass
