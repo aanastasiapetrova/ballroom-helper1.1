@@ -20,6 +20,16 @@ typing-extensions = ">=4"
 tz = ["backports.zoneinfo"]
 
 [[package]]
+name = "engineering-notation"
+version = "0.10.0"
+description = "Easy engineering notation"
+optional = false
+python-versions = "*"
+files = [
+    {file = "engineering_notation-0.10.0-py3-none-any.whl", hash = "sha256:49ff22ba8377673c8cd5f45298b87c41946b5a84583806a4655760124e22c451"},
+]
+
+[[package]]
 name = "greenlet"
 version = "3.0.2"
 description = "Lightweight in-process concurrent programming"
@@ -328,6 +338,19 @@ pymysql = ["pymysql"]
 sqlcipher = ["sqlcipher3-binary"]
 
 [[package]]
+name = "tk-tools"
+version = "0.16.0"
+description = "Tkinter-native toolset and widget library"
+optional = false
+python-versions = "*"
+files = [
+    {file = "tk_tools-0.16.0-py3-none-any.whl", hash = "sha256:3c1e343e02cbc7769fe8b36bf3ad04a47cf593936f87274a2fc99de7c20bdd5c"},
+]
+
+[package.dependencies]
+engineering-notation = ">=0.5"
+
+[[package]]
 name = "typing-extensions"
 version = "4.9.0"
 description = "Backported and Experimental Type Hints for Python 3.8+"
@@ -341,4 +364,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "017bd912270b6ffe0eddc3e1e41edd00a1bd327fa71825cfe56090061846295d"
+content-hash = "df434af0e5c9fb34fc43404e020e70ac2ba77241d8671798557e39be6ccf3571"

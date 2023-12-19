@@ -1,4 +1,3 @@
-import core.models.models as models
 from sqlalchemy import MetaData, Table, BigInteger, Integer, Boolean, Column, Date, ForeignKey, String, DateTime
 from sqlalchemy.orm import registry
 
@@ -184,9 +183,17 @@ marks = Table(
     Column('shedule_id', ForeignKey('shedules.id'))
 )
 
-class Person(object):
+
+class Competition(object):
     pass
 
+
+class Group(object):
+    pass
+
+
+class Person(object):
+    pass
 
 # mapper(models.AthletCoach, athlet_coach)
 # mapper(models.Athlete, athletes)
@@ -204,4 +211,6 @@ class Person(object):
 # mapper(models.SheduleJudge, shedule_judges)
 # mapper(models.Shedule, shedules)
 
+mapper_registry.map_imperatively(Competition, competitions)
+mapper_registry.map_imperatively(Group, groups)
 mapper_registry.map_imperatively(Person, persons)

@@ -1,5 +1,5 @@
 from ballroom_helper.repositories.base_repository import BaseRepository
 
 
-class PersonRepository(BaseRepository):
+class GroupRepository(BaseRepository):
     pass

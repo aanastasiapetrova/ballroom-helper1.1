@@ -18,8 +18,6 @@ class CompetitionJudge(object):
     pass
 
 
-class Competition(object):
-    pass
 
 
 class Couple(object):

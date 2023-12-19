@@ -13,6 +13,7 @@ alembic = "^1.13.0"
 isort = "^5.13.2"
 ruff = "^0.1.8"
 psycopg2 = "^2.9.9"
+tk-tools = "^0.16.0"
 
 
 [build-system]
