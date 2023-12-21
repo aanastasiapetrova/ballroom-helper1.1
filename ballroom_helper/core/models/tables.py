@@ -107,14 +107,14 @@ groups = Table(
     Column('name', String(255), nullable=False),
     Column('age_group', String(255), nullable=False),
     Column('program', String(255), nullable=False),
-    Column('dances', String(10)),
+    Column('dances', String(255)),
     Column('participants_amount', Integer()),
     Column('participants_limit', Integer()),
     Column('competition_part_number', Integer()),
     Column('min_age', Integer()),
     Column('max_age', Integer()),
-    Column('min_class', Integer()),
-    Column('max_class', Integer()),
+    Column('min_class', String(1)),
+    Column('max_class', String(1)),
     Column('competition_id', ForeignKey('competitions.id'), nullable=False)
 )
 
@@ -159,7 +159,7 @@ participants = Table(
     Column('id', BigInteger(), nullable=False, unique=True, primary_key=True, autoincrement=True),
     Column('start_number', BigInteger()),
     Column('competition_id', ForeignKey('competitions.id'), nullable=False),
-    Column('group_id', ForeignKey('groups.id'), nullable=False)
+    Column('athlete_id', ForeignKey('athletes.id'))
 )
 
 group_participant = Table(
@@ -183,12 +183,35 @@ marks = Table(
     Column('shedule_id', ForeignKey('shedules.id'))
 )
 
+class AthletCoach(object):
+    pass
+
+
+class Athlete(object):
+    pass
+
+
+class Club(object):
+    pass
+
+
+class Coach(object):
+    pass
+
 
 class Competition(object):
     pass
 
 
+class GroupParticipant(object):
+    pass
+
+
 class Group(object):
+    pass
+
+
+class Participant(object):
     pass
 
 
@@ -211,6 +234,12 @@ class Person(object):
 # mapper(models.SheduleJudge, shedule_judges)
 # mapper(models.Shedule, shedules)
 
+mapper_registry.map_imperatively(AthletCoach, athlet_coach)
+mapper_registry.map_imperatively(Athlete, athletes)
+mapper_registry.map_imperatively(Club, clubs)
+mapper_registry.map_imperatively(Coach, coaches)
 mapper_registry.map_imperatively(Competition, competitions)
+mapper_registry.map_imperatively(GroupParticipant, group_participant)
 mapper_registry.map_imperatively(Group, groups)
+mapper_registry.map_imperatively(Participant, participants)
 mapper_registry.map_imperatively(Person, persons)

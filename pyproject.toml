@@ -14,6 +14,8 @@ isort = "^5.13.2"
 ruff = "^0.1.8"
 psycopg2 = "^2.9.9"
 tk-tools = "^0.16.0"
+pydantic = "^2.5.2"
+fpdf = "^1.7.2"
 
 
 [build-system]

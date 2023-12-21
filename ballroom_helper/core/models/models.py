@@ -1,17 +1,4 @@
-class AthletCoach(object):
-    pass
 
-
-class Athlete(object):
-    pass
-
-
-class Club(object):
-    pass
-
-
-class Coach(object):
-    pass
 
 
 class CompetitionJudge(object):
@@ -40,8 +27,6 @@ class Mark(object):
     pass
 
 
-class Participant(object):
-    pass
 
 
 

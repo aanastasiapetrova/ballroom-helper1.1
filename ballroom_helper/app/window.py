@@ -13,7 +13,7 @@ class Root:
     def initialize(self):
         root = Tk()
         root.title("BALLROOM_HELPER v.1.1")
-        root.geometry("1000x500")
+        root.geometry("1500x1000")
 
         notebook = ttk.Notebook()
         notebook.pack(expand=True, fill=BOTH)
