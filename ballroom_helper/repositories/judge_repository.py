@@ -1,5 +1,5 @@
 from ballroom_helper.repositories.base_repository import BaseRepository
 
 
-class AthletCoachRepository(BaseRepository):
+class JudgeRepository(BaseRepository):
     pass

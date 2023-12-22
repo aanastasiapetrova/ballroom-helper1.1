@@ -1,9 +1,9 @@
-from ballroom_helper.core.db.session import get_session
-from ballroom_helper.app.registration import RegistrationWindow
-from ballroom_helper.app.judges import JudgeWindow
-
 from tkinter import *
 from tkinter import ttk
+
+from ballroom_helper.app.judges import JudgeWindow
+from ballroom_helper.app.registration import RegistrationWindow
+from ballroom_helper.core.db.session import get_session
 
 
 class Root:

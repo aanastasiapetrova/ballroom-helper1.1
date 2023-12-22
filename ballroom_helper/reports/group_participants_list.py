@@ -1,5 +1,7 @@
-from fpdf import FPDF
 from os.path import abspath
+
+from fpdf import FPDF
+
 
 def get_group_registration_list(spacing=1, participants_list=[], competition_name='', group='', gn=0):
     copy_list = participants_list.copy()

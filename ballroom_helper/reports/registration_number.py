@@ -1,5 +1,7 @@
-from fpdf import FPDF
 from os.path import abspath
+
+from fpdf import FPDF
+
 
 def get_number(spacing, number, athlete, club, competition, group, gn):
     pdf = FPDF(orientation="landscape")

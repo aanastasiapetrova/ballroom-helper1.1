@@ -1,19 +1,27 @@
 from tkinter import *
 from tkinter import ttk
 
-from ballroom_helper.repositories.competition_repository import CompetitionRepository
-from ballroom_helper.repositories.group_repository import GroupRepository
-from ballroom_helper.repositories.group_participant_repository import GroupParticipantRepository
-from ballroom_helper.repositories.athlete_repository import AthleteRepository
-from ballroom_helper.repositories.person_repository import PersonRepository
-from ballroom_helper.repositories.coach_repository import CoachRepository
-from ballroom_helper.repositories.participant_repository import ParticipantRepository
-from ballroom_helper.core.models.tables import Competition, Group, Athlete, Person, Club, Coach, AthletCoach, Participant, GroupParticipant
 from ballroom_helper.core.db.session import get_session
-from ballroom_helper.reports.registration_number import get_number
+from ballroom_helper.core.models.tables import (AthletCoach, Athlete, Club,
+                                                Coach, Competition, Group,
+                                                GroupParticipant, Participant,
+                                                Person)
+from ballroom_helper.reports.group_participants_list import \
+    get_group_registration_list
 from ballroom_helper.reports.registration_convert import get_convert
+from ballroom_helper.reports.registration_number import get_number
 from ballroom_helper.reports.registrations_list import get_group_list
-from ballroom_helper.reports.group_participants_list import get_group_registration_list
+from ballroom_helper.repositories.athlete_repository import AthleteRepository
+from ballroom_helper.repositories.coach_repository import CoachRepository
+from ballroom_helper.repositories.competition_repository import \
+    CompetitionRepository
+from ballroom_helper.repositories.group_participant_repository import \
+    GroupParticipantRepository
+from ballroom_helper.repositories.group_repository import GroupRepository
+from ballroom_helper.repositories.participant_repository import \
+    ParticipantRepository
+from ballroom_helper.repositories.person_repository import PersonRepository
+
 
 class RegistrationWindow:
     def __init__(self, master):

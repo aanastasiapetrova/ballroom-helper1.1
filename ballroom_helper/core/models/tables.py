@@ -1,4 +1,5 @@
-from sqlalchemy import MetaData, Table, BigInteger, Integer, Boolean, Column, Date, ForeignKey, String, DateTime
+from sqlalchemy import (BigInteger, Boolean, Column, Date, DateTime,
+                        ForeignKey, Integer, MetaData, String, Table)
 from sqlalchemy.orm import registry
 
 metadata = MetaData()
@@ -199,6 +200,10 @@ class Coach(object):
     pass
 
 
+class CompetitionJudge(object):
+    pass
+
+
 class Competition(object):
     pass
 
@@ -211,11 +216,23 @@ class Group(object):
     pass
 
 
+class Judge(object):
+    pass
+
+
 class Participant(object):
     pass
 
 
 class Person(object):
+    pass
+
+
+class SheduleJudge(object):
+    pass
+
+
+class Shedule(object):
     pass
 
 # mapper(models.AthletCoach, athlet_coach)
@@ -238,8 +255,12 @@ mapper_registry.map_imperatively(AthletCoach, athlet_coach)
 mapper_registry.map_imperatively(Athlete, athletes)
 mapper_registry.map_imperatively(Club, clubs)
 mapper_registry.map_imperatively(Coach, coaches)
+mapper_registry.map_imperatively(CompetitionJudge, competition_judge)
 mapper_registry.map_imperatively(Competition, competitions)
 mapper_registry.map_imperatively(GroupParticipant, group_participant)
+mapper_registry.map_imperatively(Judge, judges)
 mapper_registry.map_imperatively(Group, groups)
 mapper_registry.map_imperatively(Participant, participants)
 mapper_registry.map_imperatively(Person, persons)
+mapper_registry.map_imperatively(Shedule, shedules)
+mapper_registry.map_imperatively(SheduleJudge, shedule_judges)

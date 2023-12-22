@@ -1,5 +1,6 @@
-from sqlalchemy import select, insert, update, delete, func, Result
-from sqlalchemy.orm import Session, Query
+from sqlalchemy import Result, delete, func, insert, select, update
+from sqlalchemy.orm import Query, Session
+
 
 class BaseRepository:
     def __init__(self, model, session: Session):
@@ -30,6 +31,11 @@ class BaseRepository:
         self.session.add(object)
         self.session.commit()
         return object
+    
+
+    def add_items(self, obj_list):
+        self.session.add_all(obj_list)
+        self.session.commit()
     
 
     def delete_item(self, id):

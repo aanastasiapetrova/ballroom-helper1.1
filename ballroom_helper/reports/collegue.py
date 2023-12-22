@@ -2,14 +2,13 @@ from os.path import abspath
 
 from fpdf import FPDF
 
-
-def get_group_list(spacing=1, group_list=[], competition_name='', participant='', pn=0):
-    copy_list = group_list.copy()
-    data = [["№ группы", "№ отделения", "Название", "Программа"]]
+def get_collegue_list(spacing=1, judges_list=[], competition_name='', group='', gn=0):
+    copy_list = judges_list.copy()
+    data = [["№ п/п", "Аббревиатура", "Имя", "Категория ФТСАРР", "Клуб"]]
     data.extend(copy_list)
-    columns_amount = 4
+    columns_amount = 5
 
-    pdf = FPDF(orientation="landscape")
+    pdf = FPDF()
     pdf.add_font('Times', '', abspath('ballroom_helper/static/fonts/times.ttf'), uni=True)
     pdf.set_font('Times', size=10)
     pdf.add_page()
@@ -18,7 +17,9 @@ def get_group_list(spacing=1, group_list=[], competition_name='', participant=''
     pdf.ln(4)
     pdf.cell(pdf.w-20, 10, competition_name, border=0, align='C', fill=0)
     pdf.ln(4)
-    pdf.cell(pdf.w-20, 10, f"СПИСОК РЕГИСТРАЦИЙ УЧАСТНИКА: {participant}", border=0, align='C')
+    pdf.cell(pdf.w-20, 10, f'СУДЕЙСКАЯ КОЛЛЕГИЯ ГРУППЫ "{group}"', border=0, align='C')
+    pdf.ln(15)
+    pdf.cell(pdf.w-20, 10, f'Количество судей: {len(judges_list)}', border=0, align='L')
     pdf.ln(15)
 
     col_width = (pdf.w - 20) / columns_amount
@@ -28,4 +29,4 @@ def get_group_list(spacing=1, group_list=[], competition_name='', participant=''
             pdf.cell(col_width, row_height*spacing, border=1, txt=str(item), align='C')
         pdf.ln(row_height*spacing)
     
-    pdf.output(abspath(f"ballroom_helper/docs/group_lists/list_{pn}.pdf"))
+    pdf.output(abspath(f"ballroom_helper/docs/collegues/collegue_{gn}.pdf"))
