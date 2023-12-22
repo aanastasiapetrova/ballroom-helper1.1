@@ -13,6 +13,7 @@ from ballroom_helper.core.db.session import get_session
 from ballroom_helper.reports.registration_number import get_number
 from ballroom_helper.reports.registration_convert import get_convert
 from ballroom_helper.reports.registrations_list import get_group_list
+from ballroom_helper.reports.group_participants_list import get_group_registration_list
 
 class RegistrationWindow:
     def __init__(self, master):
@@ -141,6 +142,11 @@ class RegistrationWindow:
             text="OK",
             command=self.get_groups
         )
+        list_button = ttk.Button(
+            part_frame,
+            text="Список",
+            command=self.get_registration_list
+        )
 
         columns = ("id", "name", "participants_amount", "dances", "part")
         groups_frame = Frame(registration_group_frame)
@@ -166,6 +172,7 @@ class RegistrationWindow:
         part_label.pack(side=LEFT, padx=10, pady=10)
         self.part_combobox.pack(side=LEFT, fill=X, padx=10, pady=10)
         part_button.pack(side=LEFT, padx=10, pady=10)
+        list_button.pack(side=LEFT, padx=10, pady=10)
         self.groups_list_table.pack(side=LEFT, fill=Y)
         groups_frame.pack(side=BOTTOM, fill=X, padx=10, pady=10)
         registration_group_frame.pack(side=LEFT)
@@ -287,13 +294,14 @@ class RegistrationWindow:
             group = self.group_repo.get_item(group)
             group_names.append([group.id, group.competition_part_number, group.name, group.dances])
 
+        groups_for_number = ", ".join([group[2] for group in group_names])
         get_number(
             1,
             self._number[2],
             self._number[3],
             self._number[4],
             self.selected_competition_combobox.get().split(" - ")[1],
-            self.selected_group_value_label["text"],
+            groups_for_number,
             self._registration_group
             )
         
@@ -313,6 +321,27 @@ class RegistrationWindow:
             self.selected_competition_combobox.get().split(" - ")[1],
             self._number[3],
             self._number[1]
+        )
+
+    
+    def get_registration_list(self):
+        participants = self.registration_list_table.get_children()
+        registration_list = []
+        it = 0
+        for part in participants:
+            it += 1
+            item = [it]
+            item.extend(self.registration_list_table.item(part)["values"][2:])
+            registration_list.append(item)
+        
+        print(registration_list)
+
+        get_group_registration_list(
+            1,
+            registration_list,
+            self.selected_competition_combobox.get().split(" - ")[1],
+            self.selected_group_value_label["text"],
+            self._registration_group
         )
 
 
