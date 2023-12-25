@@ -5,12 +5,16 @@ from ballroom_helper.core.db.session import get_session
 from ballroom_helper.core.models.tables import (AthletCoach, Athlete, Club,
                                                 Coach, Competition, Group,
                                                 GroupParticipant, Participant,
-                                                Person)
+                                                Person, AttestationResult, Shedule)
 from ballroom_helper.reports.group_participants_list import \
     get_group_registration_list
 from ballroom_helper.reports.registration_convert import get_convert
 from ballroom_helper.reports.registration_number import get_number
 from ballroom_helper.reports.registrations_list import get_group_list
+from ballroom_helper.reports.result_protocol import get_group_protocol
+from ballroom_helper.reports.diploma import get_diploma
+from ballroom_helper.reports.kid_diploma import get_kid_diploma
+from ballroom_helper.reports.shedule import get_shedule
 from ballroom_helper.repositories.athlete_repository import AthleteRepository
 from ballroom_helper.repositories.coach_repository import CoachRepository
 from ballroom_helper.repositories.competition_repository import \
@@ -21,6 +25,9 @@ from ballroom_helper.repositories.group_repository import GroupRepository
 from ballroom_helper.repositories.participant_repository import \
     ParticipantRepository
 from ballroom_helper.repositories.person_repository import PersonRepository
+from ballroom_helper.repositories.result_repository import ResultRepository
+from ballroom_helper.repositories.club_repository import ClubRepository
+from ballroom_helper.repositories.shedule_repository import SheduleRepository
 
 
 class RegistrationWindow:
@@ -155,6 +162,16 @@ class RegistrationWindow:
             text="Список",
             command=self.get_registration_list
         )
+        protocol_button = ttk.Button(
+            part_frame,
+            text="Протокол",
+            command=self.get_protocol
+        )
+        shedule_button = ttk.Button(
+            part_frame,
+            text="Расписание",
+            command=self.get_shedule
+        )
 
         columns = ("id", "name", "participants_amount", "dances", "part")
         groups_frame = Frame(registration_group_frame)
@@ -181,12 +198,35 @@ class RegistrationWindow:
         self.part_combobox.pack(side=LEFT, fill=X, padx=10, pady=10)
         part_button.pack(side=LEFT, padx=10, pady=10)
         list_button.pack(side=LEFT, padx=10, pady=10)
+        protocol_button.pack(side=LEFT, padx=10, pady=10)
+        shedule_button.pack(side=LEFT, padx=10, pady=10)
         self.groups_list_table.pack(side=LEFT, fill=Y)
         groups_frame.pack(side=BOTTOM, fill=X, padx=10, pady=10)
         registration_group_frame.pack(side=LEFT)
 
         return registration_group_frame
     
+
+    def get_shedule(self):
+        session = next(get_session())
+        query = session.query(Group.name, Group.dances, Group.participants_amount, Shedule.heats_amount, Shedule.group_duration, Group.competition_part_number)
+
+        shedule_data = self.shedule_repo.inner_join(query, [Group]).all()
+        filter_shedule_groups = [
+            [shedule.name, shedule.dances, shedule.participants_amount, shedule.heats_amount, f"00:{shedule.group_duration}"]
+            for shedule in shedule_data if shedule.competition_part_number == self._part]
+        
+        result = []
+        for i in range(len(filter_shedule_groups)):
+            result.append([i+1, *filter_shedule_groups[i]])
+        
+        get_shedule(
+            1,
+            result,
+            self.selected_competition_combobox.get().split(" - ")[1],
+            self._competition,
+            self._part
+        )
 
     def select_registration_group(self, event):
         self.registration_list_table.delete(*self.registration_list_table.get_children())
@@ -205,10 +245,14 @@ class RegistrationWindow:
         self.group_participants_list = [[self._registration_group, item[0], item[1], item[2]] for item in participants_list if item[0] in self.group_participants_list]
     
         for item in self.group_participants_list:
-            for athlete in self.athletes_list:
-                if item[2] == athlete[0]:
-                    item[3] = athlete[1]
-                    item.append(athlete[2])
+            athlet_id = self.participants_repo.get_item(item[2]).athlete_id
+            person_id = self.athletes_repo.get_item(athlet_id).person_id
+            athlet = self.person_repo.get_item(person_id)
+            club = self.club_repo.get_item(athlet.club_id)
+            athlet_name = f"{athlet.first_name} {athlet.last_name}"
+            club_name = f'"{club.name}", г. {club.city}'
+            item[3] = athlet_name
+            item.append(club_name)
 
         for part in self.group_participants_list:
             self.registration_list_table.insert("", END, values=part)
@@ -352,16 +396,52 @@ class RegistrationWindow:
             self._registration_group
         )
 
+    
+    def get_protocol(self):
+        group_results_items = self.result_repo.filter_items({"group_id": self._registration_group})
+        participants = self.registration_list_table.get_children()
+        participants_data = [self.registration_list_table.item(part)["values"] for part in participants]
+        results = []
+
+        it = 0
+        for item in group_results_items:
+            it += 1
+            for part in participants_data:
+                if item.partcipant_id == part[1]:
+                    results.append([it, *part[2:], float(item.average_score)])
+
+        
+        get_group_protocol(
+            1,
+            results,
+            self.selected_competition_combobox.get().split(" - ")[1],
+            self.selected_group_value_label["text"],
+            self._registration_group
+        )
+
+        for result in results:
+            get_diploma(
+                1,
+                result[2],
+                result[1],
+                self.selected_competition_combobox.get().split(" - ")[1],
+                result[-1]
+            )
+                
+        
 
     def register(self):
-        register_participant = GroupParticipant(group_id=self._registration_group, partcipant_id=self._participant)
+        print(self._participant)
+        participant_ = self.participants_repo.filter_items({"competition_id": self._competition, "athlete_id": self._participant})[0].id
+        register_participant = GroupParticipant(group_id=self._registration_group, partcipant_id=participant_)
         added_participant = self.group_participant_repository.add_item(register_participant)
         register_group = self.group_repo.update_item(self._registration_group, {"participants_amount": len(self.group_participants_list)+1})
         self.get_groups()
 
 
     def cancel_register(self):
-        participant_to_cancel = self.group_participant_repository.filter_items({"group_id": self._registration_group, "partcipant_id": self._participant})[0]
+        participant_ = self.participants_repo.filter_items({"competition_id": self._competition, "athlete_id": self._participant})[0].id
+        participant_to_cancel = self.group_participant_repository.filter_items({"group_id": self._registration_group, "partcipant_id": participant_})[0]
         self.group_participant_repository.delete_item(participant_to_cancel.id)
         register_group = self.group_repo.update_item(self._registration_group, {"participants_amount": len(self.group_participants_list)-1})
         self.get_groups()
@@ -445,8 +525,11 @@ class RegistrationWindow:
         self.group_repo = GroupRepository(Group, next(get_session()))
         self.athletes_repo = AthleteRepository(Athlete, next(get_session()))
         self.coach_repo = CoachRepository(Coach, next(get_session()))
+        self.club_repo = ClubRepository(Club, next(get_session()))
         self.participants_repo = ParticipantRepository(Participant, next(get_session()))
         self.person_repo = PersonRepository(Person, next(get_session()))
+        self.result_repo = ResultRepository(AttestationResult, next(get_session()))
+        self.shedule_repo = SheduleRepository(Shedule, next(get_session()))
 
         main = ttk.Frame(self.master)
 

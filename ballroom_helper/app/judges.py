@@ -19,6 +19,7 @@ from ballroom_helper.repositories.shedule_judge_repository import \
 from ballroom_helper.repositories.shedule_repository import SheduleRepository
 from ballroom_helper.reports.collegue import get_collegue_list
 from ballroom_helper.reports.marks_blank import get_marks_list
+from ballroom_helper.reports.general_marks_blanks import get_general_marks_list
 from ballroom_helper.repositories.group_participant_repository import GroupParticipantRepository
 from ballroom_helper.repositories.participant_repository import ParticipantRepository
 
@@ -105,16 +106,13 @@ class JudgeWindow:
         self.judges_table.heading("id", text="ID")
         self.judges_table.heading("name", text="Имя судьи")
         self.judges_table.heading("fdsarr_judgment_category", text="ФТСАРР")
-        # self.judges_table.heading("sport_judgment_category", text="Спортивная")
         self.judges_table.heading("club", text="Клуб")
 
         self.judges_table.column("id", width=50, anchor=CENTER)
         self.judges_table.column("name", width=180, anchor=CENTER)
         self.judges_table.column("fdsarr_judgment_category", width=100, anchor=CENTER)
-        # self.judges_table.column("sport_judgment_category", width=120, anchor=CENTER)
         self.judges_table.column("club", width=180, anchor=CENTER)
 
-        # self.athletes_table.bind("<<TreeviewSelect>>", self.select_athlete_to_register)
 
         self.judges_table.delete(*self.judges_table.get_children())
         for judge in self.judges_list:
@@ -239,8 +237,6 @@ class JudgeWindow:
         self.registration_list_table.column("fdsarr_judgement_category", anchor=CENTER)
         self.registration_list_table.column("judge_club", anchor=CENTER)
 
-        # self.registration_list_table.bind("<<TreeviewSelect>>", self.get_data_for_number)
-
         form_collegue_button = ttk.Button(
             button_frame,
             text="Коллегия",
@@ -289,7 +285,7 @@ class JudgeWindow:
             self.selected_group_value_label["text"],
             self._registration_group
         )
-        
+
         for judge in result_list:
             get_marks_list(
                 1,
@@ -298,6 +294,17 @@ class JudgeWindow:
                 self.selected_competition_combobox.get().split(" - ")[1],
                 self.selected_group_value_label["text"],
                 [judge[2], judge[1]],
+                self._registration_group
+            )
+
+        for dance in dances_list:
+            get_general_marks_list(
+                1,
+                numbers_list,
+                dance,
+                self.selected_competition_combobox.get().split(" - ")[1],
+                self.selected_group_value_label["text"],
+                [judge[1] for judge in result_list],
                 self._registration_group
             )
 

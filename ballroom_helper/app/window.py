@@ -3,6 +3,7 @@ from tkinter import ttk
 
 from ballroom_helper.app.judges import JudgeWindow
 from ballroom_helper.app.registration import RegistrationWindow
+from ballroom_helper.app.marks import MarksWindow
 from ballroom_helper.core.db.session import get_session
 
 
@@ -20,8 +21,10 @@ class Root:
 
         main = RegistrationWindow(notebook).initialize()
         judges = JudgeWindow(notebook).initialize()
+        marks = MarksWindow(notebook).initialize()
 
         notebook.add(main, text="Главная")
         notebook.add(judges, text="Судьи")
+        notebook.add(marks, text="Оценки")
 
         root.mainloop()

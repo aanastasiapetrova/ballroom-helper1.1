@@ -1,5 +1,5 @@
 from sqlalchemy import (BigInteger, Boolean, Column, Date, DateTime,
-                        ForeignKey, Integer, MetaData, String, Table)
+                        ForeignKey, Integer, MetaData, String, Table, Numeric)
 from sqlalchemy.orm import registry
 
 metadata = MetaData()
@@ -179,10 +179,23 @@ marks = Table(
     Column('heat_number', Integer()),
     Column('participant_start_number', Integer()),
     Column('mark', Integer()),
+    Column('judge_abbreviation', String(10)),
     Column('group_id', ForeignKey('groups.id'), nullable=False),
     Column('partcipant_id', ForeignKey('participants.id'), nullable=False),
-    Column('shedule_id', ForeignKey('shedules.id'))
 )
+
+attestation_results = Table(
+    'attestation_results',
+    metadata,
+    Column('id', BigInteger(), nullable=False, unique=True, primary_key=True, autoincrement=True),
+    Column('partcipant_id', ForeignKey('participants.id'), nullable=False),
+    Column('group_id', ForeignKey('groups.id')),
+    Column('average_score', Numeric())
+)
+
+class AttestationResult(object):
+    pass
+
 
 class AthletCoach(object):
     pass
@@ -220,6 +233,10 @@ class Judge(object):
     pass
 
 
+class Mark(object):
+    pass
+
+
 class Participant(object):
     pass
 
@@ -251,6 +268,7 @@ class Shedule(object):
 # mapper(models.SheduleJudge, shedule_judges)
 # mapper(models.Shedule, shedules)
 
+mapper_registry.map_imperatively(AttestationResult, attestation_results)
 mapper_registry.map_imperatively(AthletCoach, athlet_coach)
 mapper_registry.map_imperatively(Athlete, athletes)
 mapper_registry.map_imperatively(Club, clubs)
@@ -260,6 +278,7 @@ mapper_registry.map_imperatively(Competition, competitions)
 mapper_registry.map_imperatively(GroupParticipant, group_participant)
 mapper_registry.map_imperatively(Judge, judges)
 mapper_registry.map_imperatively(Group, groups)
+mapper_registry.map_imperatively(Mark, marks)
 mapper_registry.map_imperatively(Participant, participants)
 mapper_registry.map_imperatively(Person, persons)
 mapper_registry.map_imperatively(Shedule, shedules)
